@@ -17,10 +17,7 @@ import { useBlockProps } from '@wordpress/block-editor';
  */
 export default function save() {
 	return (
-		<p
-			{ ...useBlockProps.save() }
-			className="wp-block-create-block-block-payment"
-		>
+		<p { ...useBlockProps.save() }>
 			{ 'Canto The Wordpress – hello from the saved content!' }
 		</p>
 	);

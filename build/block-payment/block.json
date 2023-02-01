@@ -1,16 +1,16 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 2,
-  "name": "create-block/block-payment",
+  "name": "create-block/canto-the-wordpress",
   "version": "0.1.0",
-  "title": "Canto Payment",
+  "title": "Canto The Wordpress",
   "category": "widgets",
   "icon": "smiley",
   "description": "Example block scaffolded with Create Block tool.",
   "supports": {
     "html": false
   },
-  "textdomain": "block-payment",
+  "textdomain": "canto-the-wordpress",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
   "style": "file:./style-index.css"

@@ -13,6 +13,8 @@ import { __ } from '@wordpress/i18n';
  */
 import { useBlockProps } from '@wordpress/block-editor';
 
+import { Button } from '@wordpress/components'
+
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
  * Those files can contain any CSS code that gets applied to the editor.
@@ -26,14 +28,23 @@ import './editor.scss';
  * editor. This represents what the editor will render when the block is used.
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
+ *
+ * @return {WPElement} Element to render.
  */
 export default function Edit() {
 	return (
-		<p { ...useBlockProps() }>
-			{ __(
+		<p {...useBlockProps()}>
+			{__(
 				'Canto The Wordpress – hello from the editor!',
-				'block-payment'
-			) }
+				'canto-the-wordpress'
+			)}
+
+			<div>
+
+				<Button variant="primary">
+					Click me!
+				</Button>
+			</div>
 		</p>
 	);
 }
