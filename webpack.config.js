@@ -9,24 +9,36 @@ const defaultConfig = require('@wordpress/scripts/config/webpack.config.js');
 // Configuration object.
 const config = {
     ...defaultConfig,
-    // Create the entry points.
-    // One for frontend and one for the admin area.
     entry: {
-        // frontend and admin will replace the [name] portion of the output config below.
-        // frontend: './src/front/front-index.js',
-        admin: './src/admin/settings.js',
-        "block-payment": "./src/block-payment/index.js"
+        admin: './src/admin/settings.tsx',
+        'block-payment': './src/block-payment/index.ts',
     },
 
-    // Create the output files.
-    // One for each of our entry points.
     output: {
         // [name] will be replaced by the entry key above.
         filename: '[name]/index.js',
         // The path to the output files.
         path: path.resolve(__dirname, 'build'),
     },
-}
+
+    // module: {
+    //     ...defaultConfig.module,
+    //     rules: [
+    //         ...defaultConfig.module.rules,
+    //         {
+    //             test: /\.scss$/,
+    //             use: ['style-loader', 'css-loader', 'sass-loader']
+    //         },
+    //         {
+    //             test: /\.css$/,
+    //             use: ['style-loader', 'css-loader']
+    //         },
+    //     ]
+    // },
+    // resolve: {
+    //     extensions: ['.ts', '.tsx', ...(defaultConfig.resolve ? defaultConfig.resolve.extensions || ['.js', '.jsx'] : [])]
+    // },
+};
 
 // Export the config object.
 module.exports = config;
