@@ -4,9 +4,11 @@
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
-import { useBlockProps } from '@wordpress/block-editor';
+import { useBlockProps } from "@wordpress/block-editor";
+import { Button } from "@wordpress/components";
 
 /**
+ *
  * The save function defines the way in which the different attributes should
  * be combined into the final markup, which is then serialized by the block
  * editor into `post_content`.
@@ -15,10 +17,21 @@ import { useBlockProps } from '@wordpress/block-editor';
  *
  * @return {WPElement} Element to render.
  */
-export default function save() {
+export default function save({
+	attributes: {
+		content,
+		alignment,
+		textColor,
+	},
+}) {
 	return (
-		<p { ...useBlockProps.save() }>
-			{ 'Canto The Wordpress – hello from the saved content!' }
+		<p
+			className={alignment}
+			style={{
+				color: textColor,
+			}}
+		>
+			{content}
 		</p>
 	);
 }

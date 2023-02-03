@@ -17,23 +17,35 @@ import './style.scss';
 /**
  * Internal dependencies
  */
-import Edit from './edit';
-import save from './save';
 import metadata from './block.json';
+import Edit from './edit';
+import Save from './save';
 
 /**
  * Every block starts by registering a new block type definition.
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
-registerBlockType( metadata.name, {
+registerBlockType(metadata.name, {
 	/**
 	 * @see ./edit.js
 	 */
 	edit: Edit,
-
+	attributes: {
+		content: {
+			type: 'string',
+			source: 'html',
+			selector: 'p',
+		},
+		alignment: {
+			type: 'string',
+		},
+		textColor: {
+			type: 'string',
+		},
+	},
 	/**
 	 * @see ./save.js
 	 */
-	save,
-} );
+	save: Save
+});
