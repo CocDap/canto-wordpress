@@ -39,29 +39,36 @@ __webpack_require__.r(__webpack_exports__);
 function Edit(_ref) {
   var _ref$attributes = _ref.attributes,
     content = _ref$attributes.content,
-    alignment = _ref$attributes.alignment,
-    textColor = _ref$attributes.textColor,
-    setAttributes = _ref.setAttributes,
-    className = _ref.className;
-  return /*#__PURE__*/React.createElement("div", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps)(), /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.RichText, {
-    tagName: "p",
-    className: className,
-    style: {
-      color: textColor
-    },
-    value: content,
-    onChange: function onChange(content) {
-      return setAttributes({
-        content: content
-      });
-    },
-    placeholder: "Write a paragraph...",
+    title = _ref$attributes.title,
+    setAttributes = _ref.setAttributes;
+  var onChangeContent = function onChangeContent(newContent) {
+    setAttributes({
+      content: newContent
+    });
+  };
+  var onChangeTitle = function onChangeTitle(newTitle) {
+    setAttributes({
+      title: newTitle
+    });
+  };
+  return /*#__PURE__*/React.createElement("figure", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps)(), /*#__PURE__*/React.createElement("div", {
+    className: "wallet"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "wallet__title"
+  }, /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.RichText, {
+    onChange: onChangeTitle,
+    placeholder: "Write a title...",
+    value: title,
     keepPlaceholderOnFocus: true
-  }), /*#__PURE__*/React.createElement("div", {
-    className: "card"
-  }, "Hi", /*#__PURE__*/React.createElement("button", {
-    className: ""
-  }, "Click me")));
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "wallet__address"
+  }, /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.RichText, {
+    tagName: "div",
+    value: content,
+    onChange: onChangeContent,
+    placeholder: "Write a wallet address...",
+    keepPlaceholderOnFocus: true
+  }))));
 }
 
 /***/ }),
@@ -114,14 +121,9 @@ __webpack_require__.r(__webpack_exports__);
   edit: _edit__WEBPACK_IMPORTED_MODULE_3__["default"],
   attributes: {
     content: {
-      type: 'string',
-      source: 'html',
-      selector: 'p'
-    },
-    alignment: {
       type: 'string'
     },
-    textColor: {
+    title: {
       type: 'string'
     }
   },
@@ -143,12 +145,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ save)
 /* harmony export */ });
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/extends */ "./node_modules/.pnpm/@babel+runtime@7.20.13/node_modules/@babel/runtime/helpers/esm/extends.js");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
+
 
 /**
  * React hook that is used to mark the block wrapper element.
@@ -172,14 +176,11 @@ __webpack_require__.r(__webpack_exports__);
 function save(_ref) {
   var _ref$attributes = _ref.attributes,
     content = _ref$attributes.content,
-    alignment = _ref$attributes.alignment,
-    textColor = _ref$attributes.textColor;
-  return /*#__PURE__*/React.createElement("p", {
-    className: alignment,
-    style: {
-      color: textColor
-    }
-  }, content);
+    title = _ref$attributes.title;
+  return /*#__PURE__*/React.createElement("figure", (0,_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps.save(), {
+    "data-title": title,
+    "data-content": content
+  }));
 }
 
 /***/ }),
@@ -258,13 +259,40 @@ module.exports = window["wp"]["i18n"];
 
 /***/ }),
 
+/***/ "./node_modules/.pnpm/@babel+runtime@7.20.13/node_modules/@babel/runtime/helpers/esm/extends.js":
+/*!******************************************************************************************************!*\
+  !*** ./node_modules/.pnpm/@babel+runtime@7.20.13/node_modules/@babel/runtime/helpers/esm/extends.js ***!
+  \******************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _extends)
+/* harmony export */ });
+function _extends() {
+  _extends = Object.assign ? Object.assign.bind() : function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+    return target;
+  };
+  return _extends.apply(this, arguments);
+}
+
+/***/ }),
+
 /***/ "./src/block-payment/block.json":
 /*!**************************************!*\
   !*** ./src/block-payment/block.json ***!
   \**************************************/
 /***/ ((module) => {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"create-block/canto-the-wordpress","version":"0.1.0","title":"Canto The Wordpress","category":"widgets","icon":"smiley","description":"Example block scaffolded with Create Block tool.","supports":{"html":false},"textdomain":"canto-the-wordpress","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScript":["file:./view.js"]}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"create-block/canto-the-wordpress","version":"0.1.0","title":"Canto Sub Donate Button","category":"widgets","icon":"smiley","description":"A block to display a donate button, subcribers can click to donate to the author.","supports":{"html":false},"attributes":{"content":{"type":"string"},"title":{"type":"string"}},"textdomain":"canto-the-wordpress","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScript":["file:./view.js"]}');
 
 /***/ })
 

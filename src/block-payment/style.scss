@@ -5,13 +5,37 @@
  * Replace them with your own styles or remove the file completely.
  */
 
+// define colors
+$color-primary: #00ffab;
+$color-secondary: #14c38e;
+$color-tertiary: #b8f1b0;
+$color-quaternary: #e3fcbf;
+
 .wp-block-create-block-canto-the-wordpress {
-	background-color: #21759b;
-	color: #fff;
-	padding: 2px;
+	background: white;
+	padding: 0.5rem;
 }
 
-.card {
-	background: #ee0;
-	border-radius: 5px;
+// wallet
+.wp-block-create-block-canto-the-wordpress .wallet {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background: $color-secondary;
+	border-radius: 50rem;
+	padding: 1rem;
+
+	&__title {
+		color: white;
+		font-size: 1.5rem;
+		font-weight: 700;
+		margin: 0;
+	}
+
+	&__address {
+		color: white;
+		font-size: 1rem;
+		font-weight: 400;
+		margin: 0;
+	}
 }

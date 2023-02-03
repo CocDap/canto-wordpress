@@ -8,11 +8,6 @@ window.addEventListener("load", function () {
     const block = document.querySelector(
         ".wp-block-create-block-canto-the-wordpress"
     );
-    const button = block.querySelector("button");
-
-    button.addEventListener("click", function () {
-        console.log("clicked");
-    });
 
     // render react component right after
     const div = document.createElement("div");

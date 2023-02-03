@@ -1,4 +1,6 @@
-import { BlockToolbar, RichText } from '@wordpress/block-editor';
+import {
+	BlockToolbar, RichText,
+} from '@wordpress/block-editor';
 import { __ } from "@wordpress/i18n";
 import { useBlockProps } from "@wordpress/block-editor";
 import { Button } from "@wordpress/components";
@@ -15,35 +17,42 @@ import "./editor.scss";
 export default function Edit({
 	attributes: {
 		content,
-		alignment,
-		textColor,
+		title,
 	},
 	setAttributes,
-	className,
 }) {
+	const onChangeContent = (newContent) => {
+		setAttributes({ content: newContent });
+	};
+
+	const onChangeTitle = (newTitle) => {
+		setAttributes({ title: newTitle });
+	};
+
 	return (
-		<div {...useBlockProps()}>
-			<RichText
-				tagName="p"
-				className={className}
-				style={{
-					color: textColor,
-				}}
-				value={content}
-				onChange={(content) => setAttributes({ content })}
-				placeholder="Write a paragraph..."
-				keepPlaceholderOnFocus
-			/>
+		<figure {...useBlockProps()}>
+			<div className="wallet">
+				{/* __title */}
+				<div className="wallet__title">
+					<RichText
+						onChange={onChangeTitle}
+						placeholder="Write a title..."
+						value={title}
+						keepPlaceholderOnFocus
+					/>
+				</div>
 
-			<div className="card">
-				Hi
-
-				<button
-					className=""
-				>
-					Click me
-				</button>
+				{/* &__wallet-address */}
+				<div className="wallet__address">
+					<RichText
+						tagName="div"
+						value={content}
+						onChange={onChangeContent}
+						placeholder="Write a wallet address..."
+						keepPlaceholderOnFocus
+					/>
+				</div>
 			</div>
-		</div>
+		</figure>
 	);
 }

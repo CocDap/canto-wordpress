@@ -34,15 +34,10 @@ registerBlockType(metadata.name, {
 	attributes: {
 		content: {
 			type: 'string',
-			source: 'html',
-			selector: 'p',
 		},
-		alignment: {
+		title: {
 			type: 'string',
-		},
-		textColor: {
-			type: 'string',
-		},
+		}
 	},
 	/**
 	 * @see ./save.js

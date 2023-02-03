@@ -4,7 +4,7 @@
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
-import { useBlockProps } from "@wordpress/block-editor";
+import { useBlockProps, RichText } from "@wordpress/block-editor";
 import { Button } from "@wordpress/components";
 
 /**
@@ -17,21 +17,27 @@ import { Button } from "@wordpress/components";
  *
  * @return {WPElement} Element to render.
  */
-export default function save({
-	attributes: {
-		content,
-		alignment,
-		textColor,
-	},
-}) {
+export default function save({ attributes: { content, title } }) {
 	return (
-		<p
-			className={alignment}
-			style={{
-				color: textColor,
-			}}
-		>
-			{content}
-		</p>
+		<figure {...useBlockProps.save()} data-title={title} data-content={content}>
+			{/* <div className="wallet">
+				<div className="wallet__title">
+					<RichText.Content
+						placeholder="Write a title..."
+						value={title}
+						keepPlaceholderOnFocus
+					/>
+				</div>
+
+				<div className="wallet__address">
+					<RichText.Content
+						tagName="div"
+						value={content}
+						placeholder="Write a wallet address..."
+						keepPlaceholderOnFocus
+					/>
+				</div>
+			</div> */}
+		</figure>
 	);
 }
