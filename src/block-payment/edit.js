@@ -1,6 +1,4 @@
-import {
-	BlockToolbar, RichText,
-} from '@wordpress/block-editor';
+import { BlockToolbar, RichText } from "@wordpress/block-editor";
 import { __ } from "@wordpress/i18n";
 import { useBlockProps } from "@wordpress/block-editor";
 import { Button } from "@wordpress/components";
@@ -15,10 +13,7 @@ import "./editor.scss";
  * @return {WPElement} Element to render.
  */
 export default function Edit({
-	attributes: {
-		content,
-		title,
-	},
+	attributes: { content, title },
 	setAttributes,
 }) {
 	const onChangeContent = (newContent) => {
@@ -32,24 +27,35 @@ export default function Edit({
 	return (
 		<figure {...useBlockProps()}>
 			<div className="wallet">
-				{/* __title */}
-				<div className="wallet__title">
-					<RichText
-						onChange={onChangeTitle}
-						placeholder="Write a title..."
-						value={title}
-						keepPlaceholderOnFocus
-					/>
-				</div>
-
 				{/* &__wallet-address */}
 				<div className="wallet__address">
+					<div
+						style={{
+							fontSize: "12px",
+							borderLeft: "6px solid #f000ee",
+							paddingLeft: "12px",
+							marginBottom: "20px",
+						}}
+					>
+						This is a donate section. Users connect their wallet and make
+						donations via smart contract.
+						<div style={{ fontSize: "10px" }}>
+							You can check this block on Preview mode.
+						</div>
+					</div>
+
 					<RichText
 						tagName="div"
 						value={content}
 						onChange={onChangeContent}
-						placeholder="Write a wallet address..."
+						placeholder="Write your wallet address..."
 						keepPlaceholderOnFocus
+						style={{
+							backgroundColor: "white",
+							color: "black",
+							padding: "10px 20px",
+							borderRadius: "20px",
+						}}
 					/>
 				</div>
 			</div>

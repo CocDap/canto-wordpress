@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name:       Canto The Wordpress
- * Description:       Example block scaffolded with Create Block tool.
+ * Plugin Name:       Canto Sub
+ * Description:       Payment extension for Canto Blockchain
  * Requires at least: 6.1
  * Requires PHP:      7.0
  * Version:           0.1.0

@@ -21,7 +21,8 @@ $color-quaternary: #e3fcbf;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	background: $color-secondary;
+	border-color: $color-secondary;
+	border-width: 0.1rem;
 	border-radius: 50rem;
 	padding: 1rem;
 
@@ -33,7 +34,7 @@ $color-quaternary: #e3fcbf;
 	}
 
 	&__address {
-		color: white;
+		color: black;
 		font-size: 1rem;
 		font-weight: 400;
 		margin: 0;

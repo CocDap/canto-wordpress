@@ -54,20 +54,30 @@ function Edit(_ref) {
   return /*#__PURE__*/React.createElement("figure", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps)(), /*#__PURE__*/React.createElement("div", {
     className: "wallet"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "wallet__title"
-  }, /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.RichText, {
-    onChange: onChangeTitle,
-    placeholder: "Write a title...",
-    value: title,
-    keepPlaceholderOnFocus: true
-  })), /*#__PURE__*/React.createElement("div", {
     className: "wallet__address"
-  }, /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.RichText, {
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "12px",
+      borderLeft: "6px solid #f000ee",
+      paddingLeft: "12px",
+      marginBottom: "20px"
+    }
+  }, "This is a donate section. Users connect their wallet and make donations via smart contract.", /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "10px"
+    }
+  }, "You can check this block on Preview mode.")), /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.RichText, {
     tagName: "div",
     value: content,
     onChange: onChangeContent,
-    placeholder: "Write a wallet address...",
-    keepPlaceholderOnFocus: true
+    placeholder: "Write your wallet address...",
+    keepPlaceholderOnFocus: true,
+    style: {
+      backgroundColor: "white",
+      color: "black",
+      padding: "10px 20px",
+      borderRadius: "20px"
+    }
   }))));
 }
 
