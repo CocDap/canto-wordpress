@@ -215,7 +215,7 @@ function filter_the_content_canto( $content ) {
     		case "nft":
     			$my_post = array();
 	            $my_post['ID'] = $p->ID;
-	            $my_post['post_content'] = '<div id="nft">NFT</div>' ;
+	            $my_post['post_content'] = '<div id="nft-required">'.wp_strip_all_tags($p->post_content).'</div>';
 	            //Update the post into the database
 	            wp_update_post( $my_post );
 	        	unset($my_post);
@@ -224,7 +224,7 @@ function filter_the_content_canto( $content ) {
     		case "paid":
     			$my_post = array();
 	            $my_post['ID'] = $p->ID;
-	            $my_post['post_content'] = '<div id="paid">PAID</div>' ;
+	            $my_post['post_content'] = '<div id="paid-required">'.wp_strip_all_tags($p->post_content).'</div>';
 	            //Update the post into the database
 	            wp_update_post( $my_post );
 	        	unset($my_post);
