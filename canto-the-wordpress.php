@@ -193,3 +193,50 @@ function wporg_save_postdata($post_id)
 	}
 }
 add_action('save_post', 'wporg_save_postdata');
+
+// change post content by meta value
+add_filter( 'the_content', 'filter_the_content_canto', 1 );
+
+function filter_the_content_canto( $content ) {
+	$posts = get_posts(array('post_type' => 'post','post_status' => 'publish'));//,'order' => 'ASC',) );
+    foreach($posts as $p) :  
+
+        $meta = get_post_meta($p->ID, '_wporg_payment_type',true); 
+        switch ($meta) {
+    		case "free":
+    			$my_post = array();
+	            $my_post['ID'] = $p->ID;
+	            $my_post['post_content'] = $p->post_content ;
+	            //Update the post into the database
+	            wp_update_post( $my_post );
+	        	unset($my_post);	  
+    			break;
+    			
+    		case "nft":
+    			$my_post = array();
+	            $my_post['ID'] = $p->ID;
+	            $my_post['post_content'] = '<div id="nft">NFT</div>' ;
+	            //Update the post into the database
+	            wp_update_post( $my_post );
+	        	unset($my_post);
+    			break;
+    			
+    		case "paid":
+    			$my_post = array();
+	            $my_post['ID'] = $p->ID;
+	            $my_post['post_content'] = '<div id="paid">PAID</div>' ;
+	            //Update the post into the database
+	            wp_update_post( $my_post );
+	        	unset($my_post);
+    			break;	
+    		default:
+    			return $content;
+    	}
+    endforeach; 
+   	return $content;    
+
+   	
+}  
+
+
+?>
