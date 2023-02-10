@@ -19,25 +19,10 @@ import { Button } from "@wordpress/components";
  */
 export default function save({ attributes: { content, title } }) {
 	return (
-		<figure {...useBlockProps.save()} data-title={title} data-content={content}>
-			{/* <div className="wallet">
-				<div className="wallet__title">
-					<RichText.Content
-						placeholder="Write a title..."
-						value={title}
-						keepPlaceholderOnFocus
-					/>
-				</div>
-
-				<div className="wallet__address">
-					<RichText.Content
-						tagName="div"
-						value={content}
-						placeholder="Write a wallet address..."
-						keepPlaceholderOnFocus
-					/>
-				</div>
-			</div> */}
-		</figure>
+		<figure
+			{...useBlockProps.save()}
+			data-title={title}
+			data-content={content}
+		></figure>
 	);
 }

@@ -1,20 +1,32 @@
 import { render } from "@wordpress/element";
 import { Providers } from "./context/Providers";
 // import "./styles.scss";
+import { useEffect } from "@wordpress/element";
+import { ethers } from "ethers";
+import { useWeb3Store } from "../block-payment/app/store/useWeb3";
+import { ConnectWalletButton } from "../block-payment/app/components/ConnectWalletButton";
+import { Button } from "antd";
 
 const CantoTheWordpress = () => {
+	const {
+		connect,
+		disconnect,
+		isConnected,
+		walletAddress,
+		cantoSubContract,
+		init,
+	} = useWeb3Store();
+
+	useEffect(() => {
+		init();
+	}, []);
+
 	return (
 		<Providers>
-			<h1>General</h1>
-			<p>Hi there</p>
+			<h1>Admin Panel</h1>
 
-			{/* label */}
-			<form className="canto-the-wordpress-settings-page">
-				<div>
-					<label htmlFor="canto-the-wordpress-settings-page">Address</label>
-					<input type="text" />
-				</div>
-			</form>
+			<div>{walletAddress}</div>
+			<ConnectWalletButton />
 		</Providers>
 	);
 };

@@ -1,7 +1,8 @@
 import { ethers } from "ethers";
 import React, { useEffect } from "react";
-import create from "zustand";
+import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { abi } from "./abi";
 // import {
 // 	MonoNFT,
 // 	MonoNFT__factory,
@@ -18,8 +19,6 @@ export const useWeb3Store = create()(
 		(set, get) => ({
 			isConnected: false,
 			keepDisconnect: false,
-			nftContract: null,
-			marketplaceContract: null,
 			isInit: false,
 			walletAddress: null,
 			setIsConnected: (isConnected) => set({ isConnected }),
@@ -87,12 +86,10 @@ export const useWeb3Store = create()(
 				//@ts-ignore
 				ethereum.on("chainChanged", () => window.location.reload());
 
+				const contractAddress = "0xBb661092B8c285Ad6a1eF2FA8918CfB230f98C5f";
+
 				set({
-					// nftContract: MonoNFT__factory.connect(addresses.nftAddress, provider),
-					// marketplaceContract: NFTMarketplace__factory.connect(
-					// 	addresses.marketplaceAddress,
-					// 	provider
-					// ),
+					cantoSubContract: new ethers.Contract(contractAddress, abi, provider),
 					isInit: true,
 				});
 			},

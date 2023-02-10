@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name:       Canto Sub
  * Description:       Payment extension for Canto Blockchain
@@ -29,7 +30,7 @@ function prefix_enqueue_scripts()
 	if (get_current_screen()->id != 'toplevel_page_canto-payment') {
 		return;
 	}
-	wp_enqueue_script('canto-the-wordpress-settings-js', plugins_url('build/admin/index.js', __FILE__), array('wp-element', 'wp-i18n', 'wp-components'), '1.0', false);
+	wp_enqueue_script('canto-the-wordpress-settings-js', plugins_url('build/admin/admin.js', __FILE__), array('wp-element', 'wp-i18n', 'wp-components'), '1.0', false);
 }
 function prefix_register_settings_menu()
 {
@@ -37,7 +38,7 @@ function prefix_register_settings_menu()
 }
 function plugin_settings_page()
 {
-	?>
+?>
 	<div id="canto-the-wordpress-settings-page"></div>
 <?php
 }
@@ -82,10 +83,15 @@ function wporg_custom_box_html($post)
 	$payment_type = get_post_meta($post->ID, '_wporg_payment_type', true);
 	$price = get_post_meta($post->ID, '_wporg_price', true);
 
-	?>
+?>
 
 
 	<div style="display:grid;grid-gap:10px">
+		<div>
+			<p>
+				Add Canto Sub donate button to active this post for paid or nft required.
+			</p>
+		</div>
 		<div>
 			<!-- nft address -->
 			<div style="margin-bottom:4px">
@@ -94,8 +100,7 @@ function wporg_custom_box_html($post)
 				</label>
 			</div>
 			<div>
-				<select name="payment_type" id="payment_type"
-					onchange="if (this.value == 'paid') { document.getElementById('paid').style.display = 'block'; document.getElementById('nft').style.display = 'none'; } else if (this.value == 'nft') { document.getElementById('paid').style.display = 'none'; document.getElementById('nft').style.display = 'block'; } else { document.getElementById('paid').style.display = 'none'; document.getElementById('nft').style.display = 'none'; }">
+				<select name="payment_type" id="payment_type" onchange="if (this.value == 'paid') { document.getElementById('paid').style.display = 'block'; document.getElementById('nft').style.display = 'none'; } else if (this.value == 'nft') { document.getElementById('paid').style.display = 'none'; document.getElementById('nft').style.display = 'block'; } else { document.getElementById('paid').style.display = 'none'; document.getElementById('nft').style.display = 'none'; }">
 					<option value="free" <?php echo $payment_type == 'free' ? 'selected' : '' ?>>Free</option>
 					<option value="paid" <?php echo $payment_type == 'paid' ? 'selected' : '' ?>>Paid</option>
 					<option value="nft" <?php echo $payment_type == 'nft' ? 'selected' : '' ?>>NFT Required</option>
@@ -104,7 +109,7 @@ function wporg_custom_box_html($post)
 		</div>
 
 		<script>
-			window.addEventListener('load', function () {
+			window.addEventListener('load', function() {
 				if (document.getElementById('payment_type').value == 'paid') {
 					document.getElementById('paid').style.display = 'block';
 					document.getElementById('nft').style.display = 'none';
@@ -121,7 +126,7 @@ function wporg_custom_box_html($post)
 		<!-- switch -->
 		<?
 		if ($payment_type == 'paid') {
-			?>
+		?>
 			<div id="paid">
 				<!-- nft address -->
 				<div style="margin-bottom:4px">
@@ -129,33 +134,40 @@ function wporg_custom_box_html($post)
 						Price
 					</label>
 				</div>
-				<div>
+				<div style="display:flex;align-items:center;gap:10px">
 					<input type="text" id="price" name="price" value="<?php echo esc_attr($price); ?>" />
+
+
 				</div>
+
+				<div style="margin-top:20px"></div>
+
+				<!-- For react render -->
+				<div id="register_post_with_smart_contract"></div>
 			</div>
 		<?
 		} else if ($payment_type == 'nft') {
-			?>
-				<div id="nft">
-					<div>
-						<!-- nft address -->
-						<div style="margin-bottom:4px">
-							<label for="nft_address">NFT Address</label>
-						</div>
-						<div>
-							<input type="text" id="nft_address" name="nft_address" value="<?php echo esc_attr($nft_address); ?>" />
-						</div>
+		?>
+			<div id="nft">
+				<div>
+					<!-- nft address -->
+					<div style="margin-bottom:4px">
+						<label for="nft_address">NFT Address</label>
 					</div>
-
 					<div>
-						<div style="margin-bottom:4px">
-							<label for="nft_id">NFT ID</label>
-						</div>
-						<div>
-							<input type="text" id="nft_id" name="nft_id" value="<?php echo esc_attr($nft_id); ?>" />
-						</div>
+						<input type="text" id="nft_address" name="nft_address" value="<?php echo esc_attr($nft_address); ?>" />
 					</div>
 				</div>
+
+				<div>
+					<div style="margin-bottom:4px">
+						<label for="nft_id">NFT ID</label>
+					</div>
+					<div>
+						<input type="text" id="nft_id" name="nft_id" value="<?php echo esc_attr($nft_id); ?>" />
+					</div>
+				</div>
+			</div>
 		<?
 		}
 		?>
@@ -195,48 +207,40 @@ function wporg_save_postdata($post_id)
 add_action('save_post', 'wporg_save_postdata');
 
 // change post content by meta value
-add_filter( 'the_content', 'filter_the_content_canto', 1 );
+add_filter('the_content', 'filter_the_content_canto', 1);
 
-function filter_the_content_canto( $content ) {
-	$posts = get_posts(array('post_type' => 'post','post_status' => 'publish'));//,'order' => 'ASC',) );
-    foreach($posts as $p) :  
+function filter_the_content_canto($content)
+{
 
-        $meta = get_post_meta($p->ID, '_wporg_payment_type',true); 
-        switch ($meta) {
-    		case "free":
-    			$my_post = array();
-	            $my_post['ID'] = $p->ID;
-	            $my_post['post_content'] = $p->post_content ;
-	            //Update the post into the database
-	            wp_update_post( $my_post );
-	        	unset($my_post);	  
-    			break;
-    			
-    		case "nft":
-    			$my_post = array();
-	            $my_post['ID'] = $p->ID;
-	            $my_post['post_content'] = '<div id="nft-required">'.wp_strip_all_tags($p->post_content).'</div>';
-	            //Update the post into the database
-	            wp_update_post( $my_post );
-	        	unset($my_post);
-    			break;
-    			
-    		case "paid":
-    			$my_post = array();
-	            $my_post['ID'] = $p->ID;
-	            $my_post['post_content'] = '<div id="paid-required">'.wp_strip_all_tags($p->post_content).'</div>';
-	            //Update the post into the database
-	            wp_update_post( $my_post );
-	        	unset($my_post);
-    			break;	
-    		default:
-    			return $content;
-    	}
-    endforeach; 
-   	return $content;    
+	global $post;
 
-   	
-}  
+	$meta = get_post_meta($post->ID, '_wporg_payment_type', true);
 
+	switch ($meta) {
+		case "free":
+			return $content;
 
+		case "nft":
+			$my_post = array();
+			$my_post['post_content'] = '<div id="nft-required" data-nft-address="' . get_post_meta($post->ID, '_wporg_nft_address', true) . '" data-nft-id="' . get_post_meta($post->ID, '_wporg_nft_id', true) . '">' . $post->post_content . '</div>';
+
+			//Update the post into the database
+			// wp_update_post($my_post);
+
+			return '<div id="nft-required" data-nft-address="' . get_post_meta($post->ID, '_wporg_nft_address', true) . '" data-nft-id="' . get_post_meta($post->ID, '_wporg_nft_id', true) . '">' . $content . '</div>';
+
+		case "paid":
+			$my_post = array();
+			$my_post['post_content'] = '<div id="paid-required" data-price="' . get_post_meta($post->ID, '_wporg_price', true) . '">' . $post->post_content . '</div>';
+
+			//Update the post into the database
+			// wp_update_post($my_post);
+
+			return $my_post['post_content'];
+		default:
+			return $content;
+	}
+
+	return $content;
+}
 ?>

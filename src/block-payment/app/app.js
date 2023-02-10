@@ -1,106 +1,130 @@
-import React from "react";
-import { useWeb3Store, Web3Provider } from "./store/useWeb3";
-import styled from "styled-components";
-import { useBlockProps } from "@wordpress/block-editor";
+import { render } from "@wordpress/element";
+import React, { useEffect } from "react";
+import { ConnectWalletButton } from "./components/ConnectWalletButton";
 import { useGutenbergData } from "./hooks/useGutenbergData";
-
-const ButtonContainer = styled.div`
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	width: 100%;
-	gap: 10px;
-`;
-
-const Container = styled.div`
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	gap: 10px;
-`;
-
-const WhiteButton = styled.button`
-	background-color: white;
-	border-color: black;
-	color: black;
-`;
-
-const YellowButton = styled.button`
-	background-color: var(--bs-yellow);
-	border-color: var(--bs-yellow);
-	color: black;
-`;
-
-const PlatiumButton = styled.button`
-	background-color: var(--bs-cyan);
-	border-color: var(--bs-cyan);
-	color: black;
-`;
+import { useWeb3Store, Web3Provider } from "./store/useWeb3";
+import { Container, ButtonContainer, AppContainer } from "./style";
+import { Button } from "antd";
 
 const AppInner = () => {
-	const { connect, isConnected, walletAddress, disconnect } = useWeb3Store();
-	const { content, title } = useGutenbergData();
+	const { connect, isConnected, walletAddress, disconnect, cantoSubContract } =
+		useWeb3Store();
+	const { content, title, nft, paid } = useGutenbergData();
+
+	const moveOutPluginBlock = (element) => {
+		if (element) {
+			if (element.dataset.checked === "true") {
+				element.style.display = "block";
+
+				return;
+			}
+
+			element.style.display = "none";
+
+			// copy .wp-block-create-block-canto-the-wordpress and append it after element
+			const cantoBlock = document.querySelector(
+				".wp-block-create-block-canto-the-wordpress"
+			);
+
+			if (cantoBlock) {
+				console.log(element);
+				// clone element and clear all children, keep attributes
+				const emptyDiv = element.cloneNode(false);
+
+				// set data-checked to true
+				emptyDiv.dataset.checked = true;
+
+				// insert next to element
+				element.insertAdjacentElement("afterend", emptyDiv);
+
+				// use react-dom to render newcantoblock
+				render(<App />, emptyDiv);
+
+				// remove old cantoBlock
+				cantoBlock?.remove();
+				element.remove();
+			}
+		}
+	};
+
+	useEffect(() => {
+		if (!cantoSubContract) return;
+
+		// Paid
+		{
+			const element = document.getElementById("paid-required");
+
+			moveOutPluginBlock(element);
+
+			console.log("element", element);
+		}
+
+		// NFT
+		{
+			const element = document.getElementById("nft-required");
+
+			moveOutPluginBlock(element);
+
+			console.log("element", element);
+		}
+	}, [
+		cantoSubContract,
+		document.getElementById("paid-required"),
+		document.getElementById("nft-required"),
+	]);
+
+	const onPayCantoClicked = async () => {
+		if (!cantoSubContract) return;
+
+		const tx = await cantoSubContract.methods
+			.payCanto(paid.price)
+			.send({ from: walletAddress });
+
+		console.log("tx", tx);
+
+		await tx.wait().then((receipt) => {
+			console.log("receipt", receipt);
+		});
+	};
+
+	const onPayNFTClicked = async () => {
+		if (!cantoSubContract) return;
+
+		alert("Not implemented yet");
+	};
 
 	return (
-		<div>
+		<AppContainer>
 			{isConnected ? (
 				<Container>
-					<p>Connected as {walletAddress}</p>
+					<p style={{ marginLeft: "16px" }}>Connected as {walletAddress}</p>
 
 					{/* Check pay condition */}
 					<ButtonContainer>
-						<button>Pay 10 CANTO to read</button>
-						{/* <YellowButton>Donate 100 CANTO</YellowButton>
-						<PlatiumButton>Donate 100 CANTO</PlatiumButton> */}
+						{nft.address && nft.id && (
+							<Button size="large" type="primary" onClick={onPayNFTClicked}>
+								You need to own NFT to read this article
+							</Button>
+						)}
+
+						{paid.price && (
+							<Button size="large" type="primary" onClick={onPayCantoClicked}>
+								Pay {paid.price} Canto to read this article
+							</Button>
+						)}
 
 						<div style={{ maxWidth: "400px" }}>
-							<button
-								onClick={() => {
-									disconnect();
-								}}
-								style={{
-									display: "flex",
-									alignItems: "center",
-									gap: "6px",
-									border: "red 1px solid",
-									backgroundColor: "red",
-								}}
-							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									fill="none"
-									viewBox="0 0 24 24"
-									strokeWidth={1.5}
-									stroke="currentColor"
-									style={{
-										width: "20px",
-										height: "20px",
-									}}
-								>
-									<path
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
-									/>
-								</svg>
-								Disconnect
-							</button>
+							<ConnectWalletButton />
 						</div>
 					</ButtonContainer>
 				</Container>
 			) : (
 				<>
 					<p>Not connected</p>
-					<button
-						onClick={() => {
-							connect();
-						}}
-					>
-						Connect
-					</button>
+					<ConnectWalletButton />
 				</>
 			)}
-		</div>
+		</AppContainer>
 	);
 };
 
