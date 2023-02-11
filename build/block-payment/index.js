@@ -62,23 +62,7 @@ function Edit(_ref) {
       paddingLeft: "12px",
       marginBottom: "20px"
     }
-  }, "This is a donate section. Users connect their wallet and make donations via smart contract.", /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: "10px"
-    }
-  }, "You can check this block on Preview mode.")), /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.RichText, {
-    tagName: "div",
-    value: content,
-    onChange: onChangeContent,
-    placeholder: "Write your wallet address...",
-    keepPlaceholderOnFocus: true,
-    style: {
-      backgroundColor: "white",
-      color: "black",
-      padding: "10px 20px",
-      borderRadius: "20px"
-    }
-  }))));
+  }, "This is a donate section block. You can have this block everywhere.", /*#__PURE__*/React.createElement("br", null), "Look at the demo below to see how it works."))));
 }
 
 /***/ }),
@@ -302,7 +286,7 @@ function _extends() {
   \**************************************/
 /***/ ((module) => {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"create-block/canto-the-wordpress","version":"0.1.0","title":"Canto Sub Donate Button","category":"widgets","icon":"smiley","description":"A block to display a donate button, subcribers can click to donate to the author.","supports":{"html":false},"attributes":{"content":{"type":"string"},"title":{"type":"string"}},"textdomain":"canto-the-wordpress","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScript":["file:./view.js"]}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"create-block/canto-the-wordpress","version":"0.1.0","title":"Canto Sub Donate Button","category":"widgets","icon":"smiley","description":"A block to display a donate button, subcribers can click to donate to the author.","supports":{"html":false},"attributes":{"content":{"type":"string"},"title":{"type":"string"}},"textdomain":"canto-the-wordpress","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","script":["file:./view.js"]}');
 
 /***/ })
 

@@ -5,18 +5,22 @@ import { App as RegisterNFTApp } from "./register-nft/app";
 window.addEventListener("load", function () {
 	console.log("hi there");
 
-	//wp-block-create-block-canto-the-wordpress
-	const block = document.querySelector(
-		".wp-block-create-block-canto-the-wordpress"
-	);
+	try {
+		//wp-block-create-block-canto-the-wordpress
+		const block = document.querySelector(
+			".wp-block-create-block-canto-the-wordpress"
+		);
 
-	// render react component right after
-	const div = document.createElement("div");
-	div.id = "root";
-	block.appendChild(div);
+		// render react component right after
+		const div = document.createElement("div");
+		div.id = "root";
+		block.appendChild(div);
 
-	// render react component
-	render(<App />, div);
+		// render react component
+		render(<App />, div);
+	} catch (e) {
+		console.log("error", e);
+	}
 
 	//  Load register nft
 	{

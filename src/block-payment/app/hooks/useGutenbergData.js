@@ -11,6 +11,10 @@ export const useGutenbergData = () => {
 	// price
 	const price = document.querySelector("#paid-required")?.dataset.price;
 
+	// wallet address
+	const walletAddress =
+		document.querySelector("#paid-required")?.dataset.walletAddress;
+
 	return {
 		content,
 		title,
@@ -20,6 +24,7 @@ export const useGutenbergData = () => {
 		},
 		paid: {
 			price,
+			walletAddress,
 		},
 	};
 };

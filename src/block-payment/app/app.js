@@ -1,15 +1,18 @@
-import { render } from "@wordpress/element";
+import { render, useState } from "@wordpress/element";
+import { Button, message } from "antd";
+import { ethers } from "ethers";
 import React, { useEffect } from "react";
+import { getMetadata } from "../register-nft/app";
 import { ConnectWalletButton } from "./components/ConnectWalletButton";
 import { useGutenbergData } from "./hooks/useGutenbergData";
 import { useWeb3Store, Web3Provider } from "./store/useWeb3";
-import { Container, ButtonContainer, AppContainer } from "./style";
-import { Button } from "antd";
+import { AppContainer, ButtonContainer, Container } from "./style";
 
-const AppInner = () => {
+const AppInner = ({ backupContent }) => {
 	const { connect, isConnected, walletAddress, disconnect, cantoSubContract } =
 		useWeb3Store();
 	const { content, title, nft, paid } = useGutenbergData();
+	const [hasPaid, setHasPaid] = useState(false);
 
 	const moveOutPluginBlock = (element) => {
 		if (element) {
@@ -27,7 +30,6 @@ const AppInner = () => {
 			);
 
 			if (cantoBlock) {
-				console.log(element);
 				// clone element and clear all children, keep attributes
 				const emptyDiv = element.cloneNode(false);
 
@@ -37,8 +39,13 @@ const AppInner = () => {
 				// insert next to element
 				element.insertAdjacentElement("afterend", emptyDiv);
 
+				const backupContent = element.innerHTML.replace(
+					cantoBlock.outerHTML,
+					""
+				);
+
 				// use react-dom to render newcantoblock
-				render(<App />, emptyDiv);
+				render(<App backupContent={backupContent} />, emptyDiv);
 
 				// remove old cantoBlock
 				cantoBlock?.remove();
@@ -50,13 +57,17 @@ const AppInner = () => {
 	useEffect(() => {
 		if (!cantoSubContract) return;
 
+		const cantoBlock = document.querySelector(
+			".wp-block-create-block-canto-the-wordpress"
+		);
+
 		// Paid
 		{
 			const element = document.getElementById("paid-required");
 
 			moveOutPluginBlock(element);
 
-			console.log("element", element);
+			console.log("paid element", element?.innerHTML);
 		}
 
 		// NFT
@@ -65,7 +76,9 @@ const AppInner = () => {
 
 			moveOutPluginBlock(element);
 
-			console.log("element", element);
+			// if (element)
+			// 	// back up the original element, but remove the canto block
+			// 	setBackupContent(element.innerHTML.replace(cantoBlock.outerHTML, ""));
 		}
 	}, [
 		cantoSubContract,
@@ -76,15 +89,36 @@ const AppInner = () => {
 	const onPayCantoClicked = async () => {
 		if (!cantoSubContract) return;
 
-		const tx = await cantoSubContract.methods
-			.payCanto(paid.price)
-			.send({ from: walletAddress });
+		const provider = new ethers.providers.Web3Provider(window.ethereum);
+		const signer = provider.getSigner();
+		const contractWithSigner = cantoSubContract.connect(signer);
+		const { baseUrl, postId } = getMetadata();
 
-		console.log("tx", tx);
+		try {
+			message.open({
+				key: "transaction",
+				type: "loading",
+				content: "Waiting for transaction confirmation",
+				duration: 0,
+			});
 
-		await tx.wait().then((receipt) => {
-			console.log("receipt", receipt);
-		});
+			const tx = await contractWithSigner.deposit(baseUrl, postId, {
+				value: ethers.utils.parseEther(paid.price),
+			});
+
+			await tx.wait();
+
+			message.open({
+				key: "transaction",
+				type: "success",
+				content: "Transaction confirmed",
+				duration: 2,
+			});
+
+			setHasPaid(true);
+		} catch (error) {
+			message.error("Transaction failed");
+		}
 	};
 
 	const onPayNFTClicked = async () => {
@@ -93,8 +127,23 @@ const AppInner = () => {
 		alert("Not implemented yet");
 	};
 
+	useEffect(() => {
+		// hasDonateForPost
+		const { baseUrl, postId } = getMetadata();
+
+		if (!cantoSubContract) return;
+
+		cantoSubContract
+			.hasDonateForPost(baseUrl, postId, walletAddress)
+			.then((res) => {
+				setHasPaid(res);
+			});
+	}, [cantoSubContract, walletAddress]);
+
 	return (
 		<AppContainer>
+			{hasPaid && <div dangerouslySetInnerHTML={{ __html: backupContent }} />}
+
 			{isConnected ? (
 				<Container>
 					<p style={{ marginLeft: "16px" }}>Connected as {walletAddress}</p>
@@ -107,11 +156,17 @@ const AppInner = () => {
 							</Button>
 						)}
 
-						{paid.price && (
-							<Button size="large" type="primary" onClick={onPayCantoClicked}>
-								Pay {paid.price} Canto to read this article
-							</Button>
-						)}
+						{paid.price &&
+							(!hasPaid ? (
+								<Button size="large" type="primary" onClick={onPayCantoClicked}>
+									Pay {paid.price} Canto to read this article
+									{/* <span>{paid.walletAddress}</span> */}
+								</Button>
+							) : (
+								<Button disabled size="large">
+									You have paid for this article
+								</Button>
+							))}
 
 						<div style={{ maxWidth: "400px" }}>
 							<ConnectWalletButton />
@@ -128,10 +183,18 @@ const AppInner = () => {
 	);
 };
 
-export const App = () => {
+export const App = (props) => {
 	return (
-		<Web3Provider>
-			<AppInner />
-		</Web3Provider>
+		<div className="reset-button">
+			<Web3Provider>
+				<AppInner {...props} />
+			</Web3Provider>
+
+			<style jsx>{`
+				.reset-button button {
+					border: none;
+				}
+			`}</style>
+		</div>
 	);
 };

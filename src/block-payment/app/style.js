@@ -33,6 +33,4 @@ export const Container = styled.div`
 	gap: 10px;
 `;
 
-export const AppContainer = styled.div`
-	margin-bottom: 100px;
-`;
+export const AppContainer = styled.div``;

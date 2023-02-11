@@ -38,6 +38,7 @@ export const useWeb3Store = create()(
 					isConnected: true,
 					keepDisconnect: false,
 					walletAddress: await signer.getAddress(),
+					cantoSubContract: get().cantoSubContract,
 				});
 			},
 			disconnect: () => {
@@ -56,7 +57,6 @@ export const useWeb3Store = create()(
 				}
 
 				const provider = new ethers.providers.Web3Provider(window.ethereum);
-
 				const { provider: ethereum } = provider;
 
 				//@ts-ignore
@@ -86,7 +86,7 @@ export const useWeb3Store = create()(
 				//@ts-ignore
 				ethereum.on("chainChanged", () => window.location.reload());
 
-				const contractAddress = "0xBb661092B8c285Ad6a1eF2FA8918CfB230f98C5f";
+				const contractAddress = "0x688fD4a9E52a423A1522059957BA61A7C4cF6c41";
 
 				set({
 					cantoSubContract: new ethers.Contract(contractAddress, abi, provider),

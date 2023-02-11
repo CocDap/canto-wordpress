@@ -82,6 +82,7 @@ function wporg_custom_box_html($post)
 	$nft_id = get_post_meta($post->ID, '_wporg_nft_id', true);
 	$payment_type = get_post_meta($post->ID, '_wporg_payment_type', true);
 	$price = get_post_meta($post->ID, '_wporg_price', true);
+	$wallet_address = get_post_meta($post->ID, '_wporg_wallet_address', true);
 
 ?>
 
@@ -128,17 +129,20 @@ function wporg_custom_box_html($post)
 		if ($payment_type == 'paid') {
 		?>
 			<div id="paid">
-				<!-- nft address -->
-				<div style="margin-bottom:4px">
-					<label for="price">
-						Price
-					</label>
-				</div>
-				<div style="display:flex;align-items:center;gap:10px">
-					<input type="text" id="price" name="price" value="<?php echo esc_attr($price); ?>" />
+				<figure>
+					<!-- nft address -->
+					<div style="margin-bottom:4px">
+						<label for="price">
+							Price
+						</label>
+					</div>
+					<div style="display:flex;align-items:center;gap:10px">
+						<input type="text" id="price" name="price" value="<?php echo esc_attr($price); ?>" />
 
 
-				</div>
+					</div>
+				</figure>
+
 
 				<div style="margin-top:20px"></div>
 
@@ -202,6 +206,12 @@ function wporg_save_postdata($post_id)
 			'_wporg_price',
 			$_POST['price']
 		);
+
+		update_post_meta(
+			$post_id,
+			'_wporg_wallet_address',
+			$_POST['wallet_address']
+		);
 	}
 }
 add_action('save_post', 'wporg_save_postdata');
@@ -231,7 +241,7 @@ function filter_the_content_canto($content)
 
 		case "paid":
 			$my_post = array();
-			$my_post['post_content'] = '<div id="paid-required" data-price="' . get_post_meta($post->ID, '_wporg_price', true) . '">' . $post->post_content . '</div>';
+			$my_post['post_content'] = '<div id="paid-required" data-wallet-address="' . get_post_meta($post->ID, '_wporg_wallet_address', true) . '" data-price="' . get_post_meta($post->ID, '_wporg_price', true) . '">' . $post->post_content . '</div>';
 
 			//Update the post into the database
 			// wp_update_post($my_post);

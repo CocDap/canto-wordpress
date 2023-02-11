@@ -175,6 +175,11 @@ export const abi = [
 				name: "id",
 				type: "string",
 			},
+			{
+				internalType: "address",
+				name: "addr",
+				type: "address",
+			},
 		],
 		name: "hasDonateForPost",
 		outputs: [

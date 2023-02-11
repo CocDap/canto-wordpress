@@ -37,14 +37,12 @@ export default function Edit({
 							marginBottom: "20px",
 						}}
 					>
-						This is a donate section. Users connect their wallet and make
-						donations via smart contract.
-						<div style={{ fontSize: "10px" }}>
-							You can check this block on Preview mode.
-						</div>
+						This is a donate section block. You can have this block everywhere.
+						<br />
+						Look at the demo below to see how it works.
 					</div>
 
-					<RichText
+					{/* <RichText
 						tagName="div"
 						value={content}
 						onChange={onChangeContent}
@@ -56,7 +54,7 @@ export default function Edit({
 							padding: "10px 20px",
 							borderRadius: "20px",
 						}}
-					/>
+					/> */}
 				</div>
 			</div>
 		</figure>
