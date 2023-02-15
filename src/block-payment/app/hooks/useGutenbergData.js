@@ -6,7 +6,6 @@ export const useGutenbergData = () => {
 	// data-nft-address, data-nft-id
 	const nftAddress =
 		document.querySelector("#nft-required")?.dataset.nftAddress;
-	const nftId = document.querySelector("#nft-required")?.dataset.nftId;
 
 	// price
 	const price = document.querySelector("#paid-required")?.dataset.price;
@@ -20,7 +19,6 @@ export const useGutenbergData = () => {
 		title,
 		nft: {
 			address: nftAddress,
-			id: nftId,
 		},
 		paid: {
 			price,

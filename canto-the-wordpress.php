@@ -64,7 +64,7 @@ function wporg_add_custom_box()
 		add_meta_box(
 			'wporg_box_id',
 			// Unique ID
-			'NFT Contract',
+			'Canto Sub',
 			// Box title
 			'wporg_custom_box_html',
 			// Content callback, must be of type callable

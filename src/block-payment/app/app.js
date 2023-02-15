@@ -9,8 +9,15 @@ import { useWeb3Store, Web3Provider } from "./store/useWeb3";
 import { AppContainer, ButtonContainer, Container } from "./style";
 
 const AppInner = ({ backupContent }) => {
-	const { connect, isConnected, walletAddress, disconnect, cantoSubContract } =
-		useWeb3Store();
+	const {
+		connect,
+		isConnected,
+		walletAddress,
+		disconnect,
+		cantoSubContract,
+		nftContract,
+		initNFTAddress,
+	} = useWeb3Store();
 	const { content, title, nft, paid } = useGutenbergData();
 	const [hasPaid, setHasPaid] = useState(false);
 
@@ -55,6 +62,12 @@ const AppInner = ({ backupContent }) => {
 	};
 
 	useEffect(() => {
+		if (!nft?.address) return;
+
+		initNFTAddress(nft.address);
+	}, [nft.address]);
+
+	useEffect(() => {
 		if (!cantoSubContract) return;
 
 		const cantoBlock = document.querySelector(
@@ -66,8 +79,6 @@ const AppInner = ({ backupContent }) => {
 			const element = document.getElementById("paid-required");
 
 			moveOutPluginBlock(element);
-
-			console.log("paid element", element?.innerHTML);
 		}
 
 		// NFT
@@ -124,7 +135,9 @@ const AppInner = ({ backupContent }) => {
 	const onPayNFTClicked = async () => {
 		if (!cantoSubContract) return;
 
-		alert("Not implemented yet");
+		// navigate to nft page
+		const url = "https://nftbuy-page.com";
+		window.location.href = url;
 	};
 
 	useEffect(() => {
@@ -132,13 +145,25 @@ const AppInner = ({ backupContent }) => {
 		const { baseUrl, postId } = getMetadata();
 
 		if (!cantoSubContract) return;
+		if (!nftContract) return;
+		if (!isConnected) return;
 
 		cantoSubContract
 			.hasDonateForPost(baseUrl, postId, walletAddress)
 			.then((res) => {
 				setHasPaid(res);
 			});
-	}, [cantoSubContract, walletAddress]);
+
+		// hasNFTForPost - ERC721
+		if (nftContract) {
+			// at least one nft is required
+			nftContract.balanceOf(walletAddress).then((res) => {
+				if (res > 0) {
+					setHasPaid(true);
+				}
+			});
+		}
+	}, [cantoSubContract, nftContract, walletAddress, isConnected]);
 
 	return (
 		<AppContainer>

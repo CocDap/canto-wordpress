@@ -3,13 +3,7 @@ import React, { useEffect } from "react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { abi } from "./abi";
-// import {
-// 	MonoNFT,
-// 	MonoNFT__factory,
-// 	NFTMarketplace,
-// 	NFTMarketplace__factory,
-// } from "../typechain";
-const addresses = require("../contracts/contract-address.json");
+import { abi as nftContractAbi } from "./nftContractAbi";
 
 export const CHAIN_ID = "0x539";
 export const CHAIN_NAME = "Localnet";
@@ -87,10 +81,27 @@ export const useWeb3Store = create()(
 				ethereum.on("chainChanged", () => window.location.reload());
 
 				const contractAddress = "0x688fD4a9E52a423A1522059957BA61A7C4cF6c41";
+				const nftContractAddress = "0xE026F8976F8078796e90c9c5f75AD12490ccfd50";
 
 				set({
 					cantoSubContract: new ethers.Contract(contractAddress, abi, provider),
+					nftContract: new ethers.Contract(
+						nftContractAddress,
+						nftContractAbi,
+						provider
+					),
 					isInit: true,
+				});
+			},
+			initNFTAddress: async (nftAddress) => {
+				const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+				set({
+					nftContract: new ethers.Contract(
+						nftAddress,
+						nftContractAbi,
+						provider
+					),
 				});
 			},
 		}),
