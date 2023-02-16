@@ -80,16 +80,11 @@ export const useWeb3Store = create()(
 				//@ts-ignore
 				ethereum.on("chainChanged", () => window.location.reload());
 
-				const contractAddress = "0x688fD4a9E52a423A1522059957BA61A7C4cF6c41";
-				const nftContractAddress = "0xE026F8976F8078796e90c9c5f75AD12490ccfd50";
+				const contractAddress = "0x5970B4d833f48bBFd26Ff484Ff38Cc20A3A3AfEe";
+				// const nftContractAddress = "0xE026F8976F8078796e90c9c5f75AD12490ccfd50";
 
 				set({
 					cantoSubContract: new ethers.Contract(contractAddress, abi, provider),
-					nftContract: new ethers.Contract(
-						nftContractAddress,
-						nftContractAbi,
-						provider
-					),
 					isInit: true,
 				});
 			},
